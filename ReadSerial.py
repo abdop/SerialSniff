@@ -16,7 +16,7 @@ From_PC_To_Cam = True
 
 listener = serial.Serial(com_port1, baud_rate, timeout=ComRead_timeout, write_timeout=ComWrite_timeout)
 forwarder = serial.Serial(com_port2, baud_rate, timeout=ComRead_timeout, write_timeout=ComWrite_timeout)
-listener.write('sh run')
+
 
 while 1:
     while (listener.inWaiting()) and From_PC_To_Cam:
