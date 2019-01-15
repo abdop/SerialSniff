@@ -4,19 +4,20 @@ import time
 baud_rate = 9600  # whatever baudrate you are listening to
 com_port2 = '/dev/ttyUSB0'  # replace with your first com port path
 com_port1 = '/dev/ttyACM0'  # replace with your second com port path
-Data_Bits = 'EIGHTBITS'
-Parity = 'PARITY_NONE'
-Stop_Bits = 'STOPBITS_ONE'
+Data_Bits = 'serial.EIGHTBITS'
+Parity = 'serial.PARITY_NONE'
+Stop_Bits = 'serial.STOPBITS_ONE'
 ComRead_timeout = 2
 Flow_Control = False
-ComWrite_timeout = 2
+ComWr_timeout = 2
 log = open('log.txt', 'a+')
 
 From_PC_To_Cam = True
 
-listener = serial.Serial(com_port1, baud_rate, timeout=ComRead_timeout, write_timeout=ComWrite_timeout)
-forwarder = serial.Serial(com_port2, baud_rate, timeout=ComRead_timeout, write_timeout=ComWrite_timeout)
-
+listener = serial.Serial(com_port1, baud_rate, timeout=ComRead_timeout, write_timeout=ComWr_timeout)
+forwarder = serial.Serial(port=com_port2, baudrate=baud_rate, bytesize=serial.EIGHTBITS, parity=serial.PARITY_NONE,
+                          stopbits=serial.STOPBITS_ONE, timeout=ComRead_timeout, xonxoff=False, rtscts=False,
+                          write_timeout=ComWr_timeout)
 
 while 1:
     while (listener.inWaiting()) and From_PC_To_Cam:
