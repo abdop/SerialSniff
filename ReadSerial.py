@@ -23,7 +23,8 @@ while 1:
     while (listener.inWaiting()) and From_PC_To_Cam:
         serial_out = listener.readline()
         localtime = time.asctime(time.localtime(time.time()))
-        log.write(localtime, serial_out)
+        Msg = localtime + serial_out
+        log.write(Msg)
         print(serial_out)  # or write it to a file
         forwarder.write(serial_out)
     else:
@@ -32,7 +33,8 @@ while 1:
     while (forwarder.inWaiting()) and not From_PC_To_Cam:
         serial_out = forwarder.readline()
         localtime = time.asctime(time.localtime(time.time()))
-        log.write(localtime, serial_out)
+        Msg = localtime + serial_out
+        log.write(Msg)
         print(serial_out)  # or write it to a file
         listener.write(serial_out)
     else:
