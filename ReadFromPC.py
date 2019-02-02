@@ -1,13 +1,7 @@
 import serial
 import time
 
-baud_rate = 9600  # whatever baudrate you are listening to
-Data_Bits = 'serial.EIGHTBITS'
-Parity = 'serial.PARITY_NONE'
-Stop_Bits = 'serial.STOPBITS_ONE'
-
 com_port1 = '/dev/ttyUSB0'  # replace with your first com port path
-com_port2 = '/dev/ttyUSB1'  # replace with your second com port path
 
 baud_rate_FC = 19200
 Data_Bits_FC = serial.EIGHTBITS
@@ -33,10 +27,6 @@ listener = serial.Serial(port=com_port1, baudrate=baud_rate_FC, bytesize=Data_Bi
                          stopbits=Stop_Bits_FC_Rx, timeout=ComRead_timeout, xonxoff=False, rtscts=False,
                          write_timeout=ComWr_timeout)
 
-forwarder = serial.Serial(port=com_port2, baudrate=baud_rate_FC, bytesize=Data_Bits_FC, parity=Parity_FC,
-                          stopbits=Stop_Bits_FC_Rx, timeout=ComRead_timeout, xonxoff=False, rtscts=False,
-                          write_timeout=ComWr_timeout)
-
 while 1:
     while (listener.inWaiting()) and From_PC_To_Cam:
         serial_out = listener.readline()
@@ -45,16 +35,17 @@ while 1:
         Msg += "\n"
         log.write(Msg)
         print(serial_out.encode('hex'))  # or write it to a file
-        forwarder.write(serial_out)
+        '''
     else:
         From_PC_To_Cam = False
 
     while (forwarder.inWaiting()) and not From_PC_To_Cam:
         serial_out = forwarder.readline()
         localtime = time.asctime(time.localtime(time.time()))
-        Msg = "CAM " + localtime + " " + serial_out.encode('hex') + "\n"
+        Msg = "CAM " + localtime + " " + serial_out + "\n"
         log.write(Msg)
-        print(serial_out.encode('hex'))  # or write it to a file
+        print(serial_out)  # or write it to a file
         listener.write(serial_out)
     else:
         From_PC_To_Cam = True
+'''
